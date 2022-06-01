@@ -27,17 +27,11 @@
 
 #include "piano_view.h"
 
-PianoView::PianoView() {
-  hermes::Path shaders_path(std::string(SHADERS_PATH));
-  keys_.instance_model = circe::Shapes::plane(hermes::Plane::XY(), {}, {0.5, 0, 0}, 1,
-                                              circe::shape_options::uv);
-  HERMES_CHECK_EXP_WITH_LOG(keys_.instance_program.link(shaders_path, "piano_key"),
-                            keys_.instance_program.err);
-  keys_.resize(88);
-  key_state_.resize(88, false);
-}
+PianoView::PianoView() = default;
 
 void PianoView::render(circe::CameraInterface *camera) {
+  if(!keys_.count())
+    return;
   if (needs_update_) {
     auto instance_data = keys_.instanceData();
     for (size_t i = 0; i < 88; i++) {
@@ -65,6 +59,22 @@ void PianoView::releaseKey(int piano_key) {
   needs_update_ = true;
 }
 
+void PianoView::init() {
+  keys_.model_handle = *circe::gl::SceneResourceManager::modelHandle("quad");
+  keys_.program_handle = *circe::gl::ProgramManager::programHandle("piano_key");
+  HERMES_ASSERT(keys_.good());
+  keys_.resize(88);
+  key_state_.resize(88, false);
+}
+
 void PianoView::update() {
   needs_update_ = true;
+}
+
+std::string PianoView::debugInfo() {
+  hermes::Str s;
+  s.appendLine("[PIANO VIEW][DEBUG DATA]");
+  s.appendLine("\t[buffer][id ", keys_.buffer().id(), "][", keys_.count(), " instances]");
+  s.append(keys_.instanceData().memoryDump());
+  return s.str();
 }

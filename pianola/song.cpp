@@ -39,12 +39,12 @@ Song Song::fromFile(const hermes::Path &path) {
   libremidi::reader::parse_result result{};
   result = reader.parse(bytes);
   HERMES_ASSERT(result == libremidi::reader::validated);
-  hermes::MemoryDumper::dump(bytes.data(),
-                             bytes.size(),
-                             18,
-                             {},
-                             hermes::memory_dumper_options::show_ascii
-                                 | hermes::memory_dumper_options::write_to_console);
+//  hermes::MemoryDumper::dump(bytes.data(),
+//                             bytes.size(),
+//                             18,
+//                             {},
+//                             hermes::memory_dumper_options::show_ascii
+//                                 | hermes::memory_dumper_options::write_to_console);
 
   Song song;
   song.divisions_ = reader.ticksPerBeat;

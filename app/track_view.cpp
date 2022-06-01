@@ -31,14 +31,14 @@
 #include "track_view.h"
 #include "view_preferences.h"
 
-TrackView::TrackView()  {
-  notes_.instance_model = circe::Shapes::plane(hermes::Plane::XY(), {}, {0.5, 0, 0}, 1,
-                                               circe::shape_options::uv);
+TrackView::TrackView() {
+  notes_.model_handle = *circe::gl::SceneResourceManager::modelHandle("quad");
+  notes_.program_handle = *circe::gl::ProgramManager::programHandle("piano_key");
 }
 
 TrackView::TrackView(const TrackView &other) {
   song_track_ = other.song_track_;
-  init();
+  notes_ = other.notes_;
 }
 
 TrackView::TrackView(pianola::Track song_track) : TrackView() {
@@ -48,8 +48,8 @@ TrackView::TrackView(pianola::Track song_track) : TrackView() {
 }
 
 void TrackView::draw(circe::CameraInterface *camera) {
-//  if (visible)
-//    notes_.draw(camera, {});
+  if (visible)
+    notes_.draw(camera, {});
 }
 
 void TrackView::init() {
@@ -80,4 +80,12 @@ void TrackView::update() {
 
 const pianola::Track &TrackView::track() const {
   return song_track_;
+}
+
+std::string TrackView::debugInfo() {
+  hermes::Str s;
+  s.appendLine("[TRACK VIEW][DEBUG DATA][", name, "][", song_track_.size(), "]");
+  s.appendLine("\t[buffer][id ", notes_.buffer().id(), "][", notes_.count(), " instances]");
+  s.append(notes_.instanceData().memoryDump());
+  return s.str();
 }

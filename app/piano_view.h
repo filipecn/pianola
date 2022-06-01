@@ -37,9 +37,11 @@ struct PianoView {
 
   void render(circe::CameraInterface *camera);
 
+  void init();
   void update();
   void pressKey(int piano_key);
   void releaseKey(int piano_key);
+  std::string debugInfo();
 
 private:
   circe::gl::InstanceSet keys_;

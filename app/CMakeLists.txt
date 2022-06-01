@@ -1,5 +1,4 @@
 set(HEADERS
-        resources_manager.h
         measure_track_view.h
         piano_view.h
         track_view.h
@@ -7,7 +6,6 @@ set(HEADERS
         )
 set(SOURCES
         main.cpp
-        resources_manager.cpp
         measure_track_view.cpp
         piano_view.cpp
         track_view.cpp

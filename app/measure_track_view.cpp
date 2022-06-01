@@ -28,11 +28,8 @@
 #include "measure_track_view.h"
 
 MeasureTrackView::MeasureTrackView() {
-  hermes::Path shaders_path(std::string(SHADERS_PATH));
-  bars_.instance_model = circe::Shapes::plane(hermes::Plane::XY(), {}, {0.5, 0, 0}, 1,
-                                              circe::shape_options::uv);
-  HERMES_CHECK_EXP_WITH_LOG(bars_.instance_program.link(shaders_path, "bar"),
-                            bars_.instance_program.err);
+  bars_.model_handle = *circe::gl::SceneResourceManager::modelHandle("quad");
+  bars_.program_handle = *circe::gl::ProgramManager::programHandle("bar");
 }
 
 void MeasureTrackView::render(circe::CameraInterface *camera) {

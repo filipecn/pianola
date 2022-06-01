@@ -39,6 +39,7 @@ struct TrackView {
   void draw(circe::CameraInterface *camera);
   void update();
   const pianola::Track &track() const;
+  std::string debugInfo();
 
   bool visible{true};
   std::string name;

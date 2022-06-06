@@ -77,4 +77,8 @@ std::ostream &operator<<(std::ostream &o, const Song &song) {
   return o;
 }
 
+float Song::divisions() const {
+  return divisions_;
+}
+
 }

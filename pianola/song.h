@@ -39,6 +39,7 @@ public:
   static Song fromFile(const hermes::Path &path);
 
   [[nodiscard]] const std::vector<Track> &tracks() const;
+  [[nodiscard]] float divisions() const;
 
   friend std::ostream &operator<<(std::ostream &o, const Song &song);
 

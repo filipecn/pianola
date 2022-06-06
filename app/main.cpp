@@ -29,6 +29,7 @@
 #include <pianola/song.h>
 #include "piano_view.h"
 #include "track_view.h"
+#include "measure_track_view.h"
 
 struct PianolaApp : public circe::gl::BaseApp {
   PianolaApp() : circe::gl::BaseApp(800, 800, "Pianola", circe::viewport_options::orthographic) {
@@ -53,10 +54,10 @@ struct PianolaApp : public circe::gl::BaseApp {
     renderDebugWindow();
     renderPreferencesWindow();
     renderMIDISongWindow();
-    grid.draw(camera);
     for (auto &track : track_views)
       track.draw(camera);
     keyboard_view.render(camera);
+    measure_view.render(camera);
   }
 
   void renderMainMenuBar() {
@@ -69,10 +70,11 @@ struct PianolaApp : public circe::gl::BaseApp {
 
   void loadMidiFile(const hermes::Path &path) {
     song = pianola::Song::fromFile(path);
-
     auto tracks = song.tracks();
-    for (const pianola::Track &track : tracks)
-      track_views.emplace_back(track);
+    track_views.resize(tracks.size());
+    for (int i = 0; i < tracks.size(); ++i)
+      track_views[i].set(tracks[i]);
+    measure_view.set(tracks.front(), song.divisions());
   }
 
   void renderDebugWindow() {
@@ -99,6 +101,7 @@ struct PianolaApp : public circe::gl::BaseApp {
       keyboard_view.update();
       for (auto &track : track_views)
         track.update();
+      measure_view.update();
     }
     ImGui::End();
   }
@@ -126,7 +129,7 @@ struct PianolaApp : public circe::gl::BaseApp {
   // vis
   PianoView keyboard_view;
   std::vector<TrackView> track_views;
-  circe::gl::helpers::CartesianGrid grid;
+  MeasureTrackView measure_view;
 };
 
 int main() {

@@ -52,7 +52,7 @@ public:
     /// \param ticks
     /// \param divisions ticks / qn
     /// \return
-    float ticks2ms(int ticks, float divisions) const;
+    [[nodiscard]] float ticks2ms(int ticks, float divisions) const;
   };
 
   TimeTrack();
@@ -60,7 +60,7 @@ public:
 
   /// \param tick_count
   /// \return tempo at tick_count
-  const Tempo& tempo(size_t tick_count);
+  [[nodiscard]] const Tempo& tempo(size_t tick_count) const;
   void push(const libremidi::message &message, size_t tick_count);
   friend std::ostream &operator<<(std::ostream &o, const TimeTrack &time_track);
 

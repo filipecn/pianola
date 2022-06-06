@@ -33,9 +33,10 @@
 
 struct TrackView {
   TrackView();
-  explicit TrackView(pianola::Track song_track);
+  explicit TrackView(const pianola::Track& song_track);
   TrackView(const TrackView &other);
 
+  void set(const pianola::Track& song_track);
   void draw(circe::CameraInterface *camera);
   void update();
   const pianola::Track &track() const;

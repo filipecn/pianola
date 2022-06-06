@@ -83,7 +83,7 @@ std::ostream &operator<<(std::ostream &o, const TimeTrack &time_track) {
   return o;
 }
 
-const TimeTrack::Tempo &TimeTrack::tempo(size_t tick_count) {
+const TimeTrack::Tempo &TimeTrack::tempo(size_t tick_count) const {
 //  HERMES_LOG_WARNING("INCOMPLETE METHOD (getting default tempo!)");
   return tempo_changes_.front();
 }

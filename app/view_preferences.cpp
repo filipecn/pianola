@@ -28,7 +28,7 @@
 #include "view_preferences.h"
 #include <pianola/utils.h>
 
-float ViewPreferences::length_per_millisecond = 0.1;
+float ViewPreferences::length_per_millisecond = 0.001;
 hermes::vec2 ViewPreferences::black_key_size = {0.54, 1.16};
 hermes::vec2 ViewPreferences::white_key_size = {0.66, 1.66};
 float ViewPreferences::key_gap = 0.05;

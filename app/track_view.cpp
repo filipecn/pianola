@@ -31,25 +31,30 @@
 #include "track_view.h"
 #include "view_preferences.h"
 
-TrackView::TrackView() {
-  notes_.model_handle = *circe::gl::SceneResourceManager::modelHandle("quad");
-  notes_.program_handle = *circe::gl::ProgramManager::programHandle("piano_key");
-}
+TrackView::TrackView() = default;
 
 TrackView::TrackView(const TrackView &other) {
   song_track_ = other.song_track_;
   notes_ = other.notes_;
 }
 
-TrackView::TrackView(pianola::Track song_track) : TrackView() {
-  song_track_ = std::move(song_track);
-  if (song_track_.size())
-    init();
+TrackView::TrackView(const pianola::Track& song_track) : TrackView() {
+  set(song_track);
 }
 
 void TrackView::draw(circe::CameraInterface *camera) {
   if (visible)
     notes_.draw(camera, {});
+}
+
+void TrackView::set(const pianola::Track &song_track) {
+  notes_.program_handle = *circe::gl::ProgramManager::programHandle("piano_key");
+  auto r = circe::gl::SceneResourceManager::pushModel(
+      circe::Shapes::plane(hermes::Plane::XY(), {}, {0.5, 0, 0}, 1, circe::shape_options::uv));
+  notes_.model_handle = r.value();
+  song_track_ = std::move(song_track);
+  if (song_track_.size())
+    init();
 }
 
 void TrackView::init() {
@@ -58,7 +63,7 @@ void TrackView::init() {
 }
 
 void TrackView::update() {
-  if (!song_track_.size())
+  if (!notes_.count() || !notes_.good())
     return;
   auto instance_data = notes_.instanceData();
   const auto &notes = song_track_.notes();
@@ -89,3 +94,4 @@ std::string TrackView::debugInfo() {
   s.append(notes_.instanceData().memoryDump());
   return s.str();
 }
+

@@ -29,13 +29,18 @@
 #define PIANOLA_APP_MEASURE_TRACK_VIEW_H
 
 #include <circe/circe.h>
+#include <pianola/track.h>
 
 struct MeasureTrackView {
   MeasureTrackView();
 
+  void update();
+  void set(const pianola::Track& track, float divisions);
+
   void render(circe::CameraInterface *camera);
 
 private:
+  float beat_duration_in_milliseconds{0};
   circe::gl::InstanceSet bars_;
 };
 

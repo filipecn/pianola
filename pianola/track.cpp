@@ -36,7 +36,6 @@ Track::Track() {
 }
 
 void Track::push(const libremidi::track_event &event, size_t tick_count, float divisions) {
-//  HERMES_LOG("{} {}", hermes::Str::rjust(tick_count, 6), event2str(event));
   if (event.m.is_meta_event())
     pushMetaEvent(event.m, tick_count);
   else
@@ -144,6 +143,16 @@ void Track::pushMetaEvent(const libremidi::message &message, size_t tick_count) 
   case libremidi::meta_event_type::PROPRIETARY: break;
   case libremidi::meta_event_type::UNKNOWN: break;
   }
+}
+
+const TimeTrack &Track::timeTrack() const {
+  return time_;
+}
+
+float Track::durationInMilliseconds(float divisions) const {
+  if (notes_.empty())
+    return 0;
+  return time_.tempo(0).ticks2ms(notes_.back().end_in_ticks - notes_.front().start_in_ticks, divisions);
 }
 
 }

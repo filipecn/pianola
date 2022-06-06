@@ -39,8 +39,10 @@ public:
   void push(const libremidi::track_event &event, size_t tick_count, float divisions);
   void pushTrackEvent(const libremidi::message &event, size_t tick_count, float divisions);
   void pushMetaEvent(const libremidi::message& event, size_t tick_count);
+  [[nodiscard]] float durationInMilliseconds(float divisions) const;
   [[nodiscard]] size_t size() const;
   [[nodiscard]] const std::vector<Note> &notes() const;
+  [[nodiscard]] const TimeTrack& timeTrack() const;
   friend std::ostream &operator<<(std::ostream &o, const Track &track);
 private:
   TimeTrack time_;
